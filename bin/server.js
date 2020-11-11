@@ -3,11 +3,11 @@ let app = express();
 const bodyParser = require('body-parser');
 require('dotenv').config({path:'./proccess.env'});
 const port = process.env.PORT;
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-let routes = require('../utils/routes') //importing route
-routes(app)
+let routes = require('../utils/routes');
+routes(app);
 
 app.use(function(req, res) {
     res.status(404).send({url: req.originalUrl + ' not found'})

@@ -1,12 +1,16 @@
-const { createPool } = require("mysql");
+const mongoose = require('mongoose');
+require('dotenv').config({path:'./proccess.env'});
+const url = process.env.MONGO_DB_URL;
+try {
+    console.log("connected to mongodb");
+    mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, function (err) {
+        if (err) throw err;
+        console.log('Successfully connected');
+    });
+} catch (error) {
+    console.log(error);
+}
 
-const pool = createPool({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    connectionLimit: 10
-});
-
-module.exports = pool;
+module.exports = {
+    mongoose
+}

@@ -1,34 +1,34 @@
-const db = require('../utils/db');
+const User = require('../schema/user');
 
 module.exports = {
-    getUserByUsername: (username, callback) => {
-        let sql = "select * from tbl_user where username = ?";
-        db.query(
-            sql,
-            [username],
-            (error, results, fields) => {
-                if (error) {
-                    callback(error);
-                }
-                return callback(null, results[0]);
+    getUserByUsername: (p_username, callback) => {
+        User.findOne({
+            username : p_username
+        }).exec(function(error, result) {
+            if (error) {
+                callback(error);
             }
-        );
+            return callback(null, result);
+        });
     },
     createUser : (data, callback) => {
-        let sql = "insert into tbl_user (username, password, created_date) values (?,?,?)";
-        db.query(
-            sql,
-            [
-                data.username,
-                data.password,
-                new Date()
-            ],
-            (error, results, fields) => {
+        User.findOne({username : data.username}, (error, user) => {
+            if(user == null) {
                 if (error) {
                     callback(error);
                 }
-                return callback(null, results);
+                const user = new User();
+                user.username = data.username;
+                user.password = data.password;
+                user.save((error, result) => {
+                    if (error) {
+                        callback(error);
+                    }
+                    return callback(null, result);
+                })
+            } else {
+                callback('user existed!');
             }
-        );
+        });
     }
 }

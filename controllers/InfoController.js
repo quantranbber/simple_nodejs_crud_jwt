@@ -1,8 +1,8 @@
-const service = require('../services/InfoSerivce');
+const service = require('../services/InfoService');
 
 module.exports = {
     getInfoByName: (req, res) => {
-        service.getInfoByName(req.params.id, (err, results) => {
+        service.getInfoByName(req.query.name, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
@@ -12,15 +12,15 @@ module.exports = {
             }
             return res.json({
                 success: 1,
-                data: results[0]
+                data: results
             });
         });
     },
     updateInfo: (req, res) => {
         let infoDTO = {};
-        infoDTO.id = req.params.id;
-        infoDTO.name = req.body.name;
-        infoDTO.value = req.body.value;
+        infoDTO.id = req.query.id;
+        infoDTO.name = req.body.name.trim();
+        infoDTO.value = req.body.value.trim();
         service.updateInfo(infoDTO, (err, results) => {
             if (err) {
                 console.log(err);
@@ -36,7 +36,7 @@ module.exports = {
         });
     },
     deleteInfo: (req, res) => {
-        service.deleteInfo(req.params.id, (err, results) => {
+        service.deleteInfo(req.query.id, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({

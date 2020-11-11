@@ -18,7 +18,7 @@ module.exports = {
             const result = compareSync(body.password, results.password);
             if (result) {
                 results.password = undefined;
-                const jsonToken = sign({ result: results }, "secret", {
+                const jsonToken = sign({ result: results }, process.env.JWT_KEY, {
                     expiresIn: "1h"
                 });
                 return res.json({
@@ -39,10 +39,9 @@ module.exports = {
         data.password = hashSync(data.password, salt);
         service.createUser(data, (err, results) => {
             if (err) {
-                console.log(err);
                 return res.status(500).json({
                     success: 0,
-                    message: "Database connection error"
+                    message: err
                 });
             }
             return res.json({
@@ -50,5 +49,20 @@ module.exports = {
                 data: "create user successful"
             });
         });
-    }
+    },
+    findUserByUsername: (req, res) => {
+        let username = req.query.username;
+        service.getUserByUsername(username, (err, result) => {
+            if (err) {
+                return res.status(500).json({
+                    success: 0,
+                    message: err
+                });
+            }
+            return res.json({
+                success: 1,
+                data: result
+            });
+        });
+    },
 }

@@ -3,14 +3,14 @@ module.exports = function(app) {
     let userCtrl = require('../controllers/UserController');
     let tokenValidate = require('../auth/TokenValidate');
 
-    app.route('/info/:id')
+    app.route('/info')
+        .post(tokenValidate.checkToken, infoCtrl.createInfo)
         .get(tokenValidate.checkToken, infoCtrl.getInfoByName)
         .put(tokenValidate.checkToken, infoCtrl.updateInfo)
         .delete(tokenValidate.checkToken, infoCtrl.deleteInfo);
     app.route('/generateToken')
         .post(userCtrl.generateToken);
-    app.route('/info/create')
-        .post(infoCtrl.createInfo);
-    app.route('/user/create')
+    app.route('/user')
+        .get(tokenValidate.checkToken, userCtrl.findUserByUsername)
         .post(userCtrl.createUser);
 };
