@@ -1,69 +1,65 @@
 const service = require('../services/InfoService');
 
 module.exports = {
-    getInfoByName: (req, res) => {
-        service.getInfoByName(req.query.name, (err, results) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).json({
-                    success: 0,
-                    message: "Database connection error"
-                });
-            }
+    getInfoByName: async (req, res) => {
+        var obj = await service.getInfoByName(req.query.name);
+        if (obj) {
             return res.json({
                 success: 1,
-                data: results
+                data: obj
             });
-        });
+        } else {
+            return res.status(500).json({
+                success: 0,
+                message: "Database connection error"
+            });
+        }
     },
-    updateInfo: (req, res) => {
+    updateInfo: async (req, res) => {
         let infoDTO = {};
         infoDTO.id = req.query.id;
         infoDTO.name = req.body.name.trim();
         infoDTO.value = req.body.value.trim();
-        service.updateInfo(infoDTO, (err, results) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).json({
-                    success: 0,
-                    message: "Database connection error"
-                });
-            }
+        var obj = await service.updateInfo(infoDTO);
+        if (obj) {
             return res.json({
                 success: 1,
-                data: "update successful"
+                data: obj
             });
-        });
+        } else {
+            return res.status(500).json({
+                success: 0,
+                message: "Database connection error"
+            });
+        }
     },
-    deleteInfo: (req, res) => {
-        service.deleteInfo(req.query.id, (err, results) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).json({
-                    success: 0,
-                    message: "Database connection error"
-                });
-            }
+    deleteInfo: async (req, res) => {
+        var result = await service.deleteInfo(req.query.id);
+        if (result) {
             return res.json({
                 success: 1,
-                data: "delete successful"
+                data: result
             });
-        });
+        } else {
+            return res.status(500).json({
+                success: 0,
+                message: "Database connection error"
+            });
+        }
     },
-    createInfo: (req, res) => {
+    createInfo: async (req, res) => {
         const data = req.body;
-        service.createInfo(data, (err, results) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).json({
-                    success: 0,
-                    message: "Database connection error"
-                });
-            }
+        var result = await service.createInfo(data);
+        if (result) {
             return res.json({
                 success: 1,
-                message: "create successful"
+                data: result
             });
-        });
+        } else {
+            return res.status(500).json({
+                success: 0,
+                message: "Database connection error"
+            });
+        }
     }
 }
