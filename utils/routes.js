@@ -13,4 +13,6 @@ module.exports = function(app) {
     app.route('/user')
         .get(tokenValidate.checkToken, userCtrl.findUserByUsername)
         .post(userCtrl.createUser);
+    app.route('/test')
+        .get(userCtrl.countExcercisesInUser);
 };

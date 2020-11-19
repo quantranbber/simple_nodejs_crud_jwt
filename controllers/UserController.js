@@ -58,4 +58,19 @@ module.exports = {
             });
         }
     },
+    countExcercisesInUser: async (req, res) => {
+        let username = req.query.username;
+        try {
+            result = await service.countDocumentsInUser(username);
+            return res.json({
+                success: 1,
+                data: result
+            });
+        } catch (err) {
+            return res.status(500).json({
+                success: 0,
+                message: err
+            });
+        }
+    }
 }

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/demo_nodejs.iml" filepath="$PROJECT_DIR$/demo_nodejs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/simple_nodejs_crud_jwt.iml" filepath="$PROJECT_DIR$/simple_nodejs_crud_jwt.iml" />
     </modules>
   </component>
 </project>
